@@ -1,0 +1,5 @@
+name: DragonDrop
+version: '${project.version}'
+main: me.jordan.dragondrop.DragonDrop
+api-version: 1.17
+description: Adds drops to the dragon fight
