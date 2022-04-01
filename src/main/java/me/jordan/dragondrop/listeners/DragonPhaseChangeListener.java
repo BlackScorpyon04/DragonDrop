@@ -3,11 +3,15 @@ package me.jordan.dragondrop.listeners;
 import me.jordan.dragondrop.DragonDrop;
 import org.bukkit.*;
 import org.bukkit.entity.EnderDragon;
+import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EnderDragonChangePhaseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
 
 public class DragonPhaseChangeListener implements Listener {
@@ -34,9 +38,29 @@ public class DragonPhaseChangeListener implements Listener {
                 @Override
                 public void run() {
                     if (t == 0){
-                        if (plugin.getConfig().getBoolean("drop-elytra"))world.dropItem(dropLocation, new ItemStack(Material.ELYTRA)).setVelocity(new Vector(0,0,0));
-                        if (plugin.getConfig().getBoolean("drop-head"))world.dropItem(dropLocation, new ItemStack(Material.DRAGON_HEAD)).setVelocity(new Vector(0,0,0));
-                        if (plugin.getConfig().getBoolean("drop-egg"))world.dropItem(dropLocation, new ItemStack(Material.DRAGON_EGG)).setVelocity(new Vector(0,0,0));
+                        Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
+
+                        Team team = board.registerNewTeam("purple");
+                        team.setColor(ChatColor.LIGHT_PURPLE);
+
+                        if (plugin.getConfig().getBoolean("drop-elytra")){
+                            Item item = world.dropItem(dropLocation, new ItemStack(Material.ELYTRA));
+                            item.setGlowing(true);
+                            item.setVelocity(new Vector(0, 0, 0));
+                            team.addEntry(item.getUniqueId().toString());
+                        }
+                        if (plugin.getConfig().getBoolean("drop-head")){
+                            Item item = world.dropItem(dropLocation, new ItemStack(Material.DRAGON_HEAD));
+                            item.setGlowing(true);
+                            item.setVelocity(new Vector(0, 0, 0));
+                            team.addEntry(item.getUniqueId().toString());
+                        }
+                        if (plugin.getConfig().getBoolean("drop-egg")){
+                            Item item = world.dropItem(dropLocation, new ItemStack(Material.DRAGON_EGG));
+                            item.setGlowing(true);
+                            item.setVelocity(new Vector(0, 0, 0));
+                            team.addEntry(item.getUniqueId().toString());
+                        }
                     }
                     t = t + Math.PI/8;
                     double x = r*Math.cos(t);
@@ -50,7 +74,7 @@ public class DragonPhaseChangeListener implements Listener {
                         this.cancel();
                     }
                 }
-            }.runTaskTimer(plugin, 300,1);
+            }.runTaskTimer(plugin, 200,1);
         }
     }
 
